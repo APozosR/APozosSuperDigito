@@ -1,0 +1,53 @@
+﻿@model ML.Usuario
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div id="fullscreen_bg" class="fullscreen_bg" />
+
+@using (Html.BeginForm("LoginInicio", "Login", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="form-signin-heading text-muted">Inicio de sesión</h1>
+            </div>
+        </div>
+
+        <div class="hidden">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.IdUsuario)
+                @Html.TextBoxFor(model => model.IdUsuario, new { @class = "form-control form-control-lg", id = "txtIdUsuario" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.UserName)
+                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control form-control-lg", id = "txtUserName" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.Password)
+                @Html.TextBoxFor(model => model.Password, new { @class = "form-control form-control-lg", id = "txtPassword" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-3 col-md-offset-5">
+                <input type="submit" value="Iniciar sesión" class="btn btn-success" />
+                <br />
+                @Html.ActionLink("Registrarse aquí", "LoginRegistro", "Login")
+            </div>
+        </div>
+
+    </div>
+}

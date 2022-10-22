@@ -1,0 +1,96 @@
+﻿@model ML.SuperDigito
+@{
+    ViewBag.Title = "Calcular";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Calcular</h2>
+<hr />
+
+<div class="row">
+
+    <div class="hidden">
+        @Html.LabelFor(model => model.Usuario.IdUsuario)
+        @Html.TextBoxFor(model => model.Usuario.IdUsuario, new { @class = "hidden", id = "txtIdUsuario" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(model => model.Usuario.Nombre)
+        @Html.TextBoxFor(model => model.Usuario.Nombre, new { @readonly = "readonly", id = "txtNombre" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(model => model.Usuario.ApellidoPaterno)
+        @Html.TextBoxFor(model => model.Usuario.ApellidoPaterno, new { @readonly = "readonly", id = "txtApellidoPaterno" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(model => model.Usuario.ApellidoMaterno)
+        @Html.TextBoxFor(model => model.Usuario.ApellidoMaterno, new { @readonly = "readonly", id = "txtApellidoMaterno" })
+    </div>
+
+</div>
+<br />
+
+
+@using (Html.BeginForm("Calcular", "SuperDigito", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="form-signin-heading text-muted">Súper dígito</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            @Html.LabelFor(model => model.Numero)
+            @Html.TextBoxFor(model => model.Numero, new { @class = "form-control form-control-lg", id = "txtNombre" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            @Html.LabelFor(model => model.Resultado)
+            @Html.TextBoxFor(model => model.Resultado, new { @readonly = "readonly", id = "txtNombre" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <input type="submit" value="Calcular" class="btn btn-success" />
+            <input class="btn btn-danger" type="button" value="Limpiar Historial" onclick="location.href='@Url.Action("DeleteHistorial", "SuperDigito")'" />
+        </div>
+    </div>
+
+
+    <hr />
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <td>Número</td>
+                <td>Resultado</td>
+                <td>Fecha</td>
+                <td>Eliminar</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.SuperDigito historial in Model.Historiales)
+            {
+                <tr>
+                    <td>@historial.Numero</td>
+                    <td>@historial.Resultado</td>
+                    <td>@historial.FechaHora</td>
+                    <td><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("DeleteHistorialBy", "SuperDigito", new { numero = historial.Numero })" onclick="return confirm('¿Seguro que deseas eliminar el resultado?');"></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+}
+<div class="row">
+    <div class="col-md-2 col-md-offset-5">
+        @Html.ActionLink("Salir", "LoginInicio", "Login", htmlAttributes: new { @class = "btn btn-danger" })
+    </div>
+</div>
+

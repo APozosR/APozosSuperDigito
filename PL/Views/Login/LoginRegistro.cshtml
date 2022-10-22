@@ -1,0 +1,67 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "LoginRegistro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="fullscreen_bg" class="fullscreen_bg" />
+@using (Html.BeginForm("LoginRegistro", "Login", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="form-signin-heading text-muted">Registro de usuario</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.Nombre)
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control form-control-lg", id = "txtNombre" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.ApellidoPaterno)
+                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control form-control-lg", id = "txtApellidoPaterno" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.ApellidoMaterno)
+                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control form-control-lg", id = "txtApellidoMaterno" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.UserName)
+                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control form-control-lg", id = "txtUserName" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.LabelFor(model => model.Password)
+                @Html.TextBoxFor(model => model.Password, new { @class = "form-control form-control-lg", id = "txtPassword" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                <input type="submit" value="Guardar" class="btn btn-success" />
+                @Html.ActionLink("Regresar", "LoginInicio", "Login", htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}

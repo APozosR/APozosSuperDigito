@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="APozosSuperDigitoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SuperDigito">
+          <Key>
+            <PropertyRef Name="IdSuperDigito" />
+          </Key>
+          <Property Name="IdSuperDigito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Numero" Type="int" />
+          <Property Name="Resultado" Type="int" />
+          <Property Name="FechaHora" Type="datetime" />
+          <Property Name="IdUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="50" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="IdSuperDigito" Type="int" />
+        </EntityType>
+        <Association Name="FK__SuperDigi__IdUsu__1ED998B2">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="SuperDigito" Type="Self.SuperDigito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="SuperDigito">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__IdSuper__21B6055D">
+          <End Role="SuperDigito" Type="Self.SuperDigito" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuperDigito">
+              <PropertyRef Name="IdSuperDigito" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdSuperDigito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DigitoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Numero" Type="int" Mode="In" />
+          <Parameter Name="Resultado" Type="int" Mode="In" />
+          <Parameter Name="FechaHora" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DigitoHistorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DigitoUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Numero" Type="int" Mode="In" />
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="HistorialDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="HistorialDeleteBy" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Numero" Type="int" Mode="In" />
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UsuarioAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UsuarioGetByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="APozosSuperDigitoModelStoreContainer">
+          <EntitySet Name="SuperDigito" EntityType="Self.SuperDigito" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__SuperDigi__IdUsu__1ED998B2" Association="Self.FK__SuperDigi__IdUsu__1ED998B2">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="SuperDigito" EntitySet="SuperDigito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__IdSuper__21B6055D" Association="Self.FK__Usuario__IdSuper__21B6055D">
+            <End Role="SuperDigito" EntitySet="SuperDigito" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APozosSuperDigitoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="SuperDigito">
+          <Key>
+            <PropertyRef Name="IdSuperDigito" />
+          </Key>
+          <Property Name="IdSuperDigito" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Numero" Type="Int32" />
+          <Property Name="Resultado" Type="Int32" />
+          <Property Name="FechaHora" Type="DateTime" Precision="3" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__SuperDigi__IdUsu__1ED998B2" FromRole="SuperDigito" ToRole="Usuario" />
+          <NavigationProperty Name="Usuarios" Relationship="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D" FromRole="SuperDigito" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SuperDigitoes" Relationship="Self.FK__SuperDigi__IdUsu__1ED998B2" FromRole="Usuario" ToRole="SuperDigito" />
+          <Property Name="IdSuperDigito" Type="Int32" />
+          <NavigationProperty Name="SuperDigito" Relationship="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D" FromRole="Usuario" ToRole="SuperDigito" />
+        </EntityType>
+        <Association Name="FK__SuperDigi__IdUsu__1ED998B2">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="SuperDigito" Type="Self.SuperDigito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="SuperDigito">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APozosSuperDigitoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SuperDigitoes" EntityType="Self.SuperDigito" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__SuperDigi__IdUsu__1ED998B2" Association="Self.FK__SuperDigi__IdUsu__1ED998B2">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="SuperDigito" EntitySet="SuperDigitoes" />
+          </AssociationSet>
+          <FunctionImport Name="DigitoAdd">
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="Resultado" Mode="In" Type="Int32" />
+            <Parameter Name="FechaHora" Mode="In" Type="String" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DigitoHistorial" ReturnType="Collection(APozosSuperDigitoModel.DigitoHistorial_Result)">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioGetByUser" ReturnType="Collection(APozosSuperDigitoModel.UsuarioGetByUser_Result)">
+          <Parameter Name="UserName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="HistorialDelete">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DigitoUpdate">
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <AssociationSet Name="FK__Usuario__IdSuper__21B6055D" Association="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D">
+            <End Role="SuperDigito" EntitySet="SuperDigitoes" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <FunctionImport Name="HistorialDeleteBy">
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="DigitoHistorial_Result">
+          <Property Type="Int32" Name="Numero" Nullable="true" />
+          <Property Type="Int32" Name="Resultado" Nullable="true" />
+          <Property Type="DateTime" Name="FechaHora" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="UsuarioGetByUser_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <Association Name="FK__Usuario__IdSuper__21B6055D">
+          <End Type="APozosSuperDigitoModel.SuperDigito" Role="SuperDigito" Multiplicity="0..1" />
+          <End Type="APozosSuperDigitoModel.Usuario" Role="Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuperDigito">
+              <PropertyRef Name="IdSuperDigito" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdSuperDigito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APozosSuperDigitoModelStoreContainer" CdmEntityContainer="APozosSuperDigitoEntities">
+          <EntitySetMapping Name="SuperDigitoes">
+            <EntityTypeMapping TypeName="APozosSuperDigitoModel.SuperDigito">
+              <MappingFragment StoreEntitySet="SuperDigito">
+                <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="APozosSuperDigitoModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DigitoAdd" FunctionName="APozosSuperDigitoModel.Store.DigitoAdd" />
+          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="APozosSuperDigitoModel.Store.UsuarioAdd" />
+          <FunctionImportMapping FunctionImportName="DigitoHistorial" FunctionName="APozosSuperDigitoModel.Store.DigitoHistorial">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APozosSuperDigitoModel.DigitoHistorial_Result">
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioGetByUser" FunctionName="APozosSuperDigitoModel.Store.UsuarioGetByUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APozosSuperDigitoModel.UsuarioGetByUser_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="HistorialDelete" FunctionName="APozosSuperDigitoModel.Store.HistorialDelete" />
+          <FunctionImportMapping FunctionImportName="DigitoUpdate" FunctionName="APozosSuperDigitoModel.Store.DigitoUpdate" />
+          <FunctionImportMapping FunctionImportName="HistorialDeleteBy" FunctionName="APozosSuperDigitoModel.Store.HistorialDeleteBy" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
