@@ -11,7 +11,7 @@ namespace ML
         public int IdSuperDigito { get; set; }
         public int Numero { get; set; }
         public int Resultado { get; set; }
-        public string FechaHora { get; set; }
+        public string Fecha { get; set; }
         public List<object> Historiales { get; set; }
         public ML.Usuario Usuario { get; set; }
     }

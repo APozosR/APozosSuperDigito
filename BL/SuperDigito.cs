@@ -17,7 +17,7 @@ namespace BL
             {
                 using (DL.APozosSuperDigitoEntities context = new DL.APozosSuperDigitoEntities())
                 {
-                    var query = context.DigitoAdd(digito.Numero, digito.Resultado, digito.FechaHora,digito.Usuario.IdUsuario);
+                    var query = context.DigitoAdd(digito.Numero, digito.Resultado, digito.Fecha,digito.Usuario.IdUsuario);
                     if (query > 0)
                     {
                         result.Correct = true;
@@ -44,7 +44,7 @@ namespace BL
             {
                 using (DL.APozosSuperDigitoEntities context = new DL.APozosSuperDigitoEntities())
                 {
-                    var query = context.DigitoUpdate(digito.Numero, digito.Usuario.IdUsuario);
+                    var query = context.DigitoUpdate(digito.Numero);
                     if (query > 0)
                     {
                         result.Correct = true;
@@ -79,7 +79,7 @@ namespace BL
                             ML.SuperDigito digito = new ML.SuperDigito();
                             digito.Numero = obj.Numero.Value;
                             digito.Resultado = obj.Resultado.Value;
-                            digito.FechaHora = obj.FechaHora.ToString();
+                            digito.Fecha = obj.Fecha.ToString();
 
                             result.Objects.Add(digito);
                         }
@@ -123,14 +123,14 @@ namespace BL
             }
             return result;
         }
-        public static ML.Result DeleteHistorialBy(ML.SuperDigito digito)
+        public static ML.Result DeleteHistorialById(ML.SuperDigito digito)
         {
             ML.Result result = new ML.Result();
             try
             {
                 using (DL.APozosSuperDigitoEntities context = new DL.APozosSuperDigitoEntities())
                 {
-                    var query = context.HistorialDeleteBy(digito.Numero, digito.Usuario.IdUsuario);
+                    var query = context.HistorialDeleteById(digito.IdSuperDigito);
                     if (query > 0)
                     {
                         result.Correct = true;
@@ -142,6 +142,42 @@ namespace BL
                 }
             }
             catch(Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
+        }
+        public static ML.Result GetByIdSuperDigito(int numero)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.APozosSuperDigitoEntities context = new DL.APozosSuperDigitoEntities())
+                {
+                    var query = context.DigitoGetByNumero(numero).FirstOrDefault();
+
+                    if (query != null)
+                    {
+                        ML.SuperDigito digito = new ML.SuperDigito();
+                        digito.IdSuperDigito = query.IdSuperDigito;
+                        digito.Numero = query.Numero.Value;
+                        digito.Resultado = query.Resultado.Value;
+                        digito.Fecha = query.Fecha.ToString();
+
+                        digito.Usuario = new ML.Usuario();
+                        digito.Usuario.IdUsuario = query.IdUsuario.Value;
+
+                        result.Object = digito;
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+            }
+            catch (Exception ex)
             {
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;

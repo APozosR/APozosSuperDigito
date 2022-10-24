@@ -11,7 +11,7 @@ namespace DL
 {
     using System;
     
-    public partial class DigitoHistorial_Result
+    public partial class GetByIdDigito_Result
     {
         public int IdSuperDigito { get; set; }
         public Nullable<int> Numero { get; set; }

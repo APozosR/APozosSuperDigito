@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ML;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,9 +15,9 @@ namespace PL.Controllers
             ML.SuperDigito historial = new ML.SuperDigito();
             historial.Usuario = new ML.Usuario();
             historial.Usuario.IdUsuario = int.Parse(Session["IdUsuario"].ToString());
-
+            ML.Result result = BL.Usuario.GetById(historial.Usuario.IdUsuario);
             ML.Result resultHistorial = BL.SuperDigito.GetHistorial(historial.Usuario.IdUsuario);
-
+            historial.Usuario = (ML.Usuario)result.Object;
             if (resultHistorial.Correct)
             {
                 historial.Historiales = resultHistorial.Objects;
@@ -33,15 +34,17 @@ namespace PL.Controllers
         {
             historial.Usuario = new ML.Usuario();
             historial.Usuario.IdUsuario = int.Parse(Session["IdUsuario"].ToString());
-       //     ML.Result result = BL.Usuario.GetByUserName();
-           // ML.Result resultHistorial = BL.SuperDigito.GetHistorial(historial.Usuario.IdUsuario);   //DESPUES DE ADD O UPDATE
+            ML.Result resultDigito = BL.SuperDigito.GetByIdSuperDigito(historial.Numero);
 
-            //GETBYSUPERDIGITO //IDHISTORIAL //RESULTADO
-            //TRUE   //UPDATE 
-            //FALSE  //CALCULAR //ADD
-            //if (historial.Usuario.IdUsuario == 0)
-            //{
-            int suma = 0;
+            ML.Result resultUsuario = BL.Usuario.GetById(historial.Usuario.IdUsuario);
+            historial.Usuario = (ML.Usuario)resultUsuario.Object;
+            if (resultDigito.Correct)
+            {
+                ML.Result resultNumero = BL.SuperDigito.Update(historial);
+            }
+            else
+            {
+                int suma = 0;
                 string numeros = historial.Numero.ToString();
 
                 do
@@ -62,30 +65,14 @@ namespace PL.Controllers
                 }
                 while (suma >= 10);
 
-                    historial.Resultado = suma;
+                historial.Resultado = suma;
 
                 ML.Result result = BL.SuperDigito.Add(historial);
-                if (result.Correct)
-                {
-                    ViewBag.MensajeDigito = "Cálculo agregado correctamente";
-                }
-                else
-                {
-                    ViewBag.MensajeDigito = "Error al añadir el cálculo";
-                }
-            //}
-            //else
-            //{
-            //    ML.Result result = BL.SuperDigito.Update(historial);
-            //    if (result.Correct)
-            //    {
-            //        ViewBag.MensajeDigito = "Resultado existente, fecha actualizada";
-            //    }
-            //    else
-            //    {
-            //        ViewBag.MensajeDigito = "Error al actualizar";
-            //    }
-        //}
+            }
+            ML.Result resultHistorial = BL.SuperDigito.GetHistorial(historial.Usuario.IdUsuario);
+            {
+                historial.Historiales = resultHistorial.Objects;
+            }
 
             return View(historial);
         }
@@ -95,11 +82,14 @@ namespace PL.Controllers
         {
             ML.SuperDigito historial = new ML.SuperDigito();
             historial.Usuario = new ML.Usuario();
+
             historial.Usuario.IdUsuario = int.Parse(Session["IdUsuario"].ToString());
-            ML.Result result = BL.SuperDigito.DeleteHistorial(historial.Usuario.IdUsuario);
-            if (result.Correct)
+            ML.Result resultUsuario = BL.Usuario.GetById(historial.Usuario.IdUsuario);
+            historial.Usuario = (ML.Usuario)resultUsuario.Object;
+            if (resultUsuario.Correct)
             {
-                ViewBag.MensajeDigito = "Historial borrrado correctamente";
+                ML.Result resultNumero = BL.SuperDigito.DeleteHistorial(historial.Usuario.IdUsuario);
+                ViewBag.MensajeDigito = "Historial borrado exitósamente";
             }
             else
             {
@@ -107,20 +97,28 @@ namespace PL.Controllers
             }
             return View("Modal");
         }
-        public ActionResult DeleteHistorialBy(int numero)
+        public ActionResult DeleteHistorialById(int numero)
         {
             ML.SuperDigito historial = new ML.SuperDigito();
             historial.Usuario = new ML.Usuario();
             historial.Usuario.IdUsuario = int.Parse(Session["IdUsuario"].ToString());
             historial.Numero = numero;
-            ML.Result result = BL.SuperDigito.DeleteHistorialBy(historial);
-            if (result.Correct)
+
+            ML.Result resultDigito = BL.SuperDigito.GetByIdSuperDigito(historial.Numero);
+
+            historial = (ML.SuperDigito)resultDigito.Object;
+
+            ML.Result result = BL.SuperDigito.DeleteHistorialById(historial);
+            if (resultDigito.Correct)
             {
-                ViewBag.MensajeDigito = "Registro borrado correctamente";
-            }
-            else
-            {
-                ViewBag.MensajeDigito = "Error al borrar el registro";
+                if (result.Correct)
+                {
+                    ViewBag.MensajeDigito = "Registro borrado correctamente";
+                }
+                else
+                {
+                    ViewBag.MensajeDigito = "Error al borrar el registro";
+                }
             }
             return View("Modal");
         }

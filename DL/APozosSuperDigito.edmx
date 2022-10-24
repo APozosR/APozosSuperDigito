@@ -12,7 +12,7 @@
           <Property Name="IdSuperDigito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Numero" Type="int" />
           <Property Name="Resultado" Type="int" />
-          <Property Name="FechaHora" Type="datetime" />
+          <Property Name="Fecha" Type="datetime" />
           <Property Name="IdUsuario" Type="int" />
         </EntityType>
         <EntityType Name="Usuario">
@@ -54,22 +54,23 @@
         <Function Name="DigitoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Numero" Type="int" Mode="In" />
           <Parameter Name="Resultado" Type="int" Mode="In" />
-          <Parameter Name="FechaHora" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha" Type="varchar" Mode="In" />
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DigitoGetByNumero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Numero" Type="int" Mode="In" />
         </Function>
         <Function Name="DigitoHistorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
         </Function>
         <Function Name="DigitoUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Numero" Type="int" Mode="In" />
-          <Parameter Name="IdUsuario" Type="int" Mode="In" />
         </Function>
         <Function Name="HistorialDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
         </Function>
-        <Function Name="HistorialDeleteBy" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Numero" Type="int" Mode="In" />
-          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        <Function Name="HistorialDeleteById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdSuperdigito" Type="int" Mode="In" />
         </Function>
         <Function Name="UsuarioAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
@@ -77,6 +78,9 @@
           <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
           <Parameter Name="UserName" Type="varchar" Mode="In" />
           <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UsuarioGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
         </Function>
         <Function Name="UsuarioGetByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserName" Type="varchar" Mode="In" />
@@ -97,6 +101,52 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="APozosSuperDigitoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="APozosSuperDigitoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SuperDigitoes" EntityType="APozosSuperDigitoModel.SuperDigito" />
+          <EntitySet Name="Usuarios" EntityType="APozosSuperDigitoModel.Usuario" />
+          <AssociationSet Name="FK__SuperDigi__IdUsu__1ED998B2" Association="APozosSuperDigitoModel.FK__SuperDigi__IdUsu__1ED998B2">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="SuperDigito" EntitySet="SuperDigitoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__IdSuper__21B6055D" Association="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D">
+            <End Role="SuperDigito" EntitySet="SuperDigitoes" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <FunctionImport Name="DigitoAdd">
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="Resultado" Mode="In" Type="Int32" />
+            <Parameter Name="Fecha" Mode="In" Type="String" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DigitoHistorial" ReturnType="Collection(APozosSuperDigitoModel.DigitoHistorial_Result)">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="HistorialDelete">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioGetByUser" ReturnType="Collection(APozosSuperDigitoModel.UsuarioGetByUser_Result)">
+          <Parameter Name="UserName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DigitoGetByNumero" ReturnType="Collection(APozosSuperDigitoModel.DigitoGetByNumero_Result)">
+          <Parameter Name="Numero" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DigitoUpdate">
+          <Parameter Name="Numero" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioGetById" ReturnType="Collection(APozosSuperDigitoModel.UsuarioGetById_Result)">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="HistorialDeleteById">
+            <Parameter Name="IdSuperdigito" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
         <EntityType Name="SuperDigito">
           <Key>
             <PropertyRef Name="IdSuperDigito" />
@@ -104,9 +154,9 @@
           <Property Name="IdSuperDigito" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Numero" Type="Int32" />
           <Property Name="Resultado" Type="Int32" />
-          <Property Name="FechaHora" Type="DateTime" Precision="3" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
           <Property Name="IdUsuario" Type="Int32" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__SuperDigi__IdUsu__1ED998B2" FromRole="SuperDigito" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario" Relationship="APozosSuperDigitoModel.FK__SuperDigi__IdUsu__1ED998B2" FromRole="SuperDigito" ToRole="Usuario" />
           <NavigationProperty Name="Usuarios" Relationship="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D" FromRole="SuperDigito" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Usuario">
@@ -119,13 +169,13 @@
           <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SuperDigitoes" Relationship="Self.FK__SuperDigi__IdUsu__1ED998B2" FromRole="Usuario" ToRole="SuperDigito" />
           <Property Name="IdSuperDigito" Type="Int32" />
+          <NavigationProperty Name="SuperDigitoes" Relationship="APozosSuperDigitoModel.FK__SuperDigi__IdUsu__1ED998B2" FromRole="Usuario" ToRole="SuperDigito" />
           <NavigationProperty Name="SuperDigito" Relationship="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D" FromRole="Usuario" ToRole="SuperDigito" />
         </EntityType>
         <Association Name="FK__SuperDigi__IdUsu__1ED998B2">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="SuperDigito" Type="Self.SuperDigito" Multiplicity="*" />
+          <End Type="APozosSuperDigitoModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="APozosSuperDigitoModel.SuperDigito" Role="SuperDigito" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Usuario">
               <PropertyRef Name="IdUsuario" />
@@ -135,61 +185,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="APozosSuperDigitoEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="SuperDigitoes" EntityType="Self.SuperDigito" />
-          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
-          <AssociationSet Name="FK__SuperDigi__IdUsu__1ED998B2" Association="Self.FK__SuperDigi__IdUsu__1ED998B2">
-            <End Role="Usuario" EntitySet="Usuarios" />
-            <End Role="SuperDigito" EntitySet="SuperDigitoes" />
-          </AssociationSet>
-          <FunctionImport Name="DigitoAdd">
-            <Parameter Name="Numero" Mode="In" Type="Int32" />
-            <Parameter Name="Resultado" Mode="In" Type="Int32" />
-            <Parameter Name="FechaHora" Mode="In" Type="String" />
-            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="UsuarioAdd">
-            <Parameter Name="Nombre" Mode="In" Type="String" />
-            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
-            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
-            <Parameter Name="UserName" Mode="In" Type="String" />
-            <Parameter Name="Password" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="DigitoHistorial" ReturnType="Collection(APozosSuperDigitoModel.DigitoHistorial_Result)">
-          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="UsuarioGetByUser" ReturnType="Collection(APozosSuperDigitoModel.UsuarioGetByUser_Result)">
-          <Parameter Name="UserName" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="HistorialDelete">
-          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="DigitoUpdate">
-            <Parameter Name="Numero" Mode="In" Type="Int32" />
-            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <AssociationSet Name="FK__Usuario__IdSuper__21B6055D" Association="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D">
-            <End Role="SuperDigito" EntitySet="SuperDigitoes" />
-            <End Role="Usuario" EntitySet="Usuarios" />
-          </AssociationSet>
-          <FunctionImport Name="HistorialDeleteBy">
-            <Parameter Name="Numero" Mode="In" Type="Int32" />
-            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
-          </FunctionImport>
-        </EntityContainer>
-        <ComplexType Name="DigitoHistorial_Result">
-          <Property Type="Int32" Name="Numero" Nullable="true" />
-          <Property Type="Int32" Name="Resultado" Nullable="true" />
-          <Property Type="DateTime" Name="FechaHora" Nullable="true" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="UsuarioGetByUser_Result">
-          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <Association Name="FK__Usuario__IdSuper__21B6055D">
           <End Type="APozosSuperDigitoModel.SuperDigito" Role="SuperDigito" Multiplicity="0..1" />
           <End Type="APozosSuperDigitoModel.Usuario" Role="Usuario" Multiplicity="*" />
@@ -202,6 +197,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="DigitoHistorial_Result">
+          <Property Type="Int32" Name="IdSuperDigito" Nullable="false" />
+          <Property Type="Int32" Name="Numero" Nullable="true" />
+          <Property Type="Int32" Name="Resultado" Nullable="true" />
+          <Property Type="DateTime" Name="Fecha" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IdUsuario" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetByIdDigito_Result">
+          <Property Type="Int32" Name="IdSuperDigito" Nullable="false" />
+          <Property Type="Int32" Name="Numero" Nullable="true" />
+          <Property Type="Int32" Name="Resultado" Nullable="true" />
+          <Property Type="DateTime" Name="Fecha" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IdUsuario" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="UsuarioGetByUser_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="DigitoGetByNumero_Result">
+          <Property Type="Int32" Name="IdSuperDigito" Nullable="false" />
+          <Property Type="Int32" Name="Numero" Nullable="true" />
+          <Property Type="Int32" Name="Resultado" Nullable="true" />
+          <Property Type="DateTime" Name="Fecha" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IdUsuario" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="UsuarioGetById_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -211,11 +243,11 @@
           <EntitySetMapping Name="SuperDigitoes">
             <EntityTypeMapping TypeName="APozosSuperDigitoModel.SuperDigito">
               <MappingFragment StoreEntitySet="SuperDigito">
-                <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
-                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
                 <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -223,26 +255,29 @@
             <EntityTypeMapping TypeName="APozosSuperDigitoModel.Usuario">
               <MappingFragment StoreEntitySet="Usuario">
                 <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
-                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="DigitoAdd" FunctionName="APozosSuperDigitoModel.Store.DigitoAdd" />
-          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="APozosSuperDigitoModel.Store.UsuarioAdd" />
           <FunctionImportMapping FunctionImportName="DigitoHistorial" FunctionName="APozosSuperDigitoModel.Store.DigitoHistorial">
             <ResultMapping>
               <ComplexTypeMapping TypeName="APozosSuperDigitoModel.DigitoHistorial_Result">
+                <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
                 <ScalarProperty Name="Numero" ColumnName="Numero" />
                 <ScalarProperty Name="Resultado" ColumnName="Resultado" />
-                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="HistorialDelete" FunctionName="APozosSuperDigitoModel.Store.HistorialDelete" />
+          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="APozosSuperDigitoModel.Store.UsuarioAdd" />
           <FunctionImportMapping FunctionImportName="UsuarioGetByUser" FunctionName="APozosSuperDigitoModel.Store.UsuarioGetByUser">
             <ResultMapping>
               <ComplexTypeMapping TypeName="APozosSuperDigitoModel.UsuarioGetByUser_Result">
@@ -255,9 +290,31 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="HistorialDelete" FunctionName="APozosSuperDigitoModel.Store.HistorialDelete" />
+          <FunctionImportMapping FunctionImportName="DigitoGetByNumero" FunctionName="APozosSuperDigitoModel.Store.DigitoGetByNumero">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APozosSuperDigitoModel.DigitoGetByNumero_Result">
+                <ScalarProperty Name="IdSuperDigito" ColumnName="IdSuperDigito" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="DigitoUpdate" FunctionName="APozosSuperDigitoModel.Store.DigitoUpdate" />
-          <FunctionImportMapping FunctionImportName="HistorialDeleteBy" FunctionName="APozosSuperDigitoModel.Store.HistorialDeleteBy" />
+          <FunctionImportMapping FunctionImportName="UsuarioGetById" FunctionName="APozosSuperDigitoModel.Store.UsuarioGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APozosSuperDigitoModel.UsuarioGetById_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="HistorialDeleteById" FunctionName="APozosSuperDigitoModel.Store.HistorialDeleteById" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -275,7 +332,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

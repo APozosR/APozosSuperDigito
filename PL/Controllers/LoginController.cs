@@ -24,6 +24,7 @@ namespace PL.Controllers
                 ML.Usuario usuario = (ML.Usuario)result.Object;
                 if (usuarioLogin.Password == usuario.Password)
                 {
+                    Session["UserName"] = usuario.UserName;
                     Session["IdUsuario"] = usuario.IdUsuario;
                     return RedirectToAction("Calcular", "SuperDigito");
                 }

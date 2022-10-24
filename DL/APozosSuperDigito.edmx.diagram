@@ -4,10 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="14076c73a682424cb1d3467da0b5de9f" Name="Diagram1">
-        <EntityTypeShape EntityType="APozosSuperDigitoModel.SuperDigito" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="APozosSuperDigitoModel.Usuario" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="APozosSuperDigitoModel.FK__SuperDigi__IdUsu__1ED998B2" ManuallyRouted="false" />
+      <Diagram DiagramId="25c83c22b4694ca482b583588af00590" Name="Diagram1">
+        <EntityTypeShape EntityType="APozosSuperDigitoModel.SuperDigito" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="APozosSuperDigitoModel.Usuario" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="APozosSuperDigitoModel.FK__SuperDigi__IdUsu__1ED998B2" />
         <AssociationConnector Association="APozosSuperDigitoModel.FK__Usuario__IdSuper__21B6055D" />
       </Diagram>
     </edmx:Diagrams>
